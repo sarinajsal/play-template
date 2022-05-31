@@ -34,6 +34,8 @@ Seq[Any](format.raw/*2.1*/("""
       <h1 class="display-3 row">Play Scala API Demo</h1>
     </div>
 
+    <p>"Welcome to Play"</p>
+
     <p class="lead">
       A demo project based off the <a href="https://github.com/miranda-hawkes/induction-tutorials/blob/master/Building-A-RESTful-API-With-Scala-Play/README.md"> Building a RESTful API with Scala and Play </a> tutorial.
     </p>
@@ -104,7 +106,7 @@ Seq[Any](format.raw/*2.1*/("""
   </div>
 
 </div>
-""")))}),format.raw/*83.2*/("""
+""")))}),format.raw/*85.2*/("""
 """))
       }
     }
@@ -121,11 +123,11 @@ Seq[Any](format.raw/*2.1*/("""
 
               /*
                   -- GENERATED --
-                  DATE: 2022-05-25T12:47:58.361322
+                  DATE: 2022-05-25T13:25:12.001075
                   SOURCE: /Users/sarina.salamon/Documents/play-template/app/views/index.scala.html
-                  HASH: 5497a12eba0b5213723c306a69b4918019aed905
-                  MATRIX: 722->1|818->4|845->6|880->33|919->35|947->37|3096->2156
-                  LINES: 21->1|26->2|27->3|27->3|27->3|29->5|107->83
+                  HASH: 39783715433b95f3aa37c83fedc0490d32846234
+                  MATRIX: 722->1|818->4|845->6|880->33|919->35|947->37|3126->2186
+                  LINES: 21->1|26->2|27->3|27->3|27->3|29->5|109->85
                   -- GENERATED --
               */
           
