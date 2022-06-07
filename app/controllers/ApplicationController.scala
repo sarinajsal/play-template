@@ -35,8 +35,7 @@ class ApplicationController @Inject()(val controllerComponents: ControllerCompon
   def update(id: String): Action[JsValue]= Action.async(parse.json) { implicit request =>
     request.body.validate[DataModel] match {
       case JsSuccess(dataModel,_) =>
-        dataRepository.update(id, dataModel).map(_ => Accepted)
-        dataRepository.read(id).map (items => Json.toJson(items)).map(result => Ok(result))
+        dataRepository.update(id, dataModel).map(_ => Accepted) //calling the data access layer, give it necessary arguments and return a status code
       case JsError(_)=> Future(BadRequest)
     }
   }
