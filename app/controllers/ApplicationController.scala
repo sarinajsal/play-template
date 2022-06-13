@@ -1,18 +1,18 @@
 package controllers
 
 import models.DataModel
-import play.api.libs.json.{Json, JsError, JsSuccess, JsValue}
+import play.api.libs.json.{JsError, JsSuccess, JsValue, Json}
 import play.api.mvc.{Action, AnyContent, BaseController, ControllerComponents, Results}
 import repositories.DataRepository
+import services.{LibraryService}
 
-
-import javax.inject.{Singleton, Inject}
-
+import java.awt.print.Book
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 
 @Singleton
-class ApplicationController @Inject()(val controllerComponents: ControllerComponents, val dataRepository: DataRepository) (implicit val executionContext: ExecutionContext) extends BaseController{
+class ApplicationController @Inject()(val controllerComponents: ControllerComponents, val dataRepository: DataRepository, val services: LibraryService)(implicit val executionContext: ExecutionContext) extends BaseController{
 
   def index(): Action[AnyContent] = Action.async { implicit request =>
     val books: Future[Seq[DataModel]] = dataRepository.collection.find().toFuture()
@@ -44,6 +44,12 @@ class ApplicationController @Inject()(val controllerComponents: ControllerCompon
     val bookDelete = dataRepository.delete(id)
     Future(Accepted)
     }
+
+  def getGoogleBook(search: String, term: String): Action[AnyContent] = Action.async { implicit request =>
+    val bookjson = services.getGoogleBook(search = search, term = term)
+    bookjson.map(items => Json.toJson(items)).map(book => Ok(book))
+  }
+
 
 
 }

@@ -1,6 +1,6 @@
 // @GENERATOR:play-routes-compiler
 // @SOURCE:/Users/sarina.salamon/Documents/play-template/conf/routes
-// @DATE:Mon Jun 06 14:59:00 BST 2022
+// @DATE:Mon Jun 13 14:18:37 BST 2022
 
 import play.api.mvc.Call
 
@@ -27,6 +27,12 @@ package controllers {
     def create(): Call = {
       
       Call("POST", _prefix + { _defaultPrefix } + "create")
+    }
+  
+    // @LINE:17
+    def getGoogleBook(search:String, term:String): Call = {
+      
+      Call("GET", _prefix + { _defaultPrefix } + "library/google/" + play.core.routing.dynamicString(implicitly[play.api.mvc.PathBindable[String]].unbind("search", search)) + "/" + play.core.routing.dynamicString(implicitly[play.api.mvc.PathBindable[String]].unbind("term", term)))
     }
   
     // @LINE:15

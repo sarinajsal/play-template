@@ -1,6 +1,6 @@
 // @GENERATOR:play-routes-compiler
 // @SOURCE:/Users/sarina.salamon/Documents/play-template/conf/routes
-// @DATE:Mon Jun 06 14:59:00 BST 2022
+// @DATE:Mon Jun 13 14:18:37 BST 2022
 
 import play.api.routing.JavaScriptReverseRoute
 
@@ -34,6 +34,16 @@ package controllers.javascript {
       """
         function() {
           return _wA({method:"POST", url:"""" + _prefix + { _defaultPrefix } + """" + "create"})
+        }
+      """
+    )
+  
+    // @LINE:17
+    def getGoogleBook: JavaScriptReverseRoute = JavaScriptReverseRoute(
+      "controllers.ApplicationController.getGoogleBook",
+      """
+        function(search0,term1) {
+          return _wA({method:"GET", url:"""" + _prefix + { _defaultPrefix } + """" + "library/google/" + encodeURIComponent((""" + implicitly[play.api.mvc.PathBindable[String]].javascriptUnbind + """)("search", search0)) + "/" + encodeURIComponent((""" + implicitly[play.api.mvc.PathBindable[String]].javascriptUnbind + """)("term", term1))})
         }
       """
     )
