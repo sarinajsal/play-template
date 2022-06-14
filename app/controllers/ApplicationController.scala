@@ -47,9 +47,15 @@ class ApplicationController @Inject()(val controllerComponents: ControllerCompon
 
   def getGoogleBook(search: String, term: String): Action[AnyContent] = Action.async { implicit request =>
     val bookjson = services.getGoogleBook(search = search, term = term)
-    bookjson.map(items => Json.toJson(items)).map(book => Ok(book))
-  }
+      bookjson.map(items => Ok(Json.toJson(items)))
+  } //use error handling?
 
+//  def getGoogleBook(search: String, term: String): Action[AnyContent] = Action.async { implicit request =>
+//    val bookjson = services.getGoogleBook(search = search, term = term).map {
+//      case Left =>
+//      case Right =>
+//    }
+//  }
 
 
 }

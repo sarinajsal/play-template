@@ -3,8 +3,7 @@ package services
 import connectors.LibraryConnector
 import models.DataModel
 
-
-import javax.inject.Inject
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
   @Singleton
