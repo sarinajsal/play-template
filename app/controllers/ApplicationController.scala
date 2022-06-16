@@ -1,12 +1,13 @@
 package controllers
 
 import models.DataModel
+import play.api.libs.json.Format.GenericFormat
 import play.api.libs.json.{JsError, JsSuccess, JsValue, Json}
 import play.api.mvc.{Action, AnyContent, BaseController, ControllerComponents, Results}
 import repositories.DataRepository
-import services.{LibraryService}
+import services.LibraryService
 
-import java.awt.print.Book
+
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -45,17 +46,19 @@ class ApplicationController @Inject()(val controllerComponents: ControllerCompon
     Future(Accepted)
     }
 
-  def getGoogleBook(search: String, term: String): Action[AnyContent] = Action.async { implicit request =>
-    val bookjson = services.getGoogleBook(search = search, term = term)
-      bookjson.map(items => Ok(Json.toJson(items)))
-  } //use error handling?
-
 //  def getGoogleBook(search: String, term: String): Action[AnyContent] = Action.async { implicit request =>
-//    val bookjson = services.getGoogleBook(search = search, term = term).map {
-//      case Left =>
-//      case Right =>
-//    }
-//  }
+//    val bookjson = services.getGoogleBook(search = search, term = term)
+//      bookjson.map(items => Ok(Json.toJson(items)))
+//  } //use error handling?
 
+
+  def getGoogleBook(search: String, term: String): Action[AnyContent] = Action.async { implicit request => //status are actions ie the return type
+     services.getGoogleBook(search = search, term = term).value.map {
+      case Right(book) =>  Ok(Json.toJson(book)) //Ok(DataModel.formats.writes(book))
+      case Left(error) => BadRequest //can accept arguments
+    }
+  }
+
+  //actions? http responses ie the error codes wrapping data models
 
 }
