@@ -1,36 +1,66 @@
 package controllers
 
-import models.DataModel
+import models.{APIError, DataModel}
 import play.api.libs.json.Format.GenericFormat
-import play.api.libs.json.{JsError, JsSuccess, JsValue, Json}
+import play.api.libs.json.{JsBoolean, JsError, JsSuccess, JsValue, Json}
 import play.api.mvc.{Action, AnyContent, BaseController, ControllerComponents, Results}
 import repositories.DataRepository
-import services.LibraryService
-
+import services.{ApplicationService, LibraryService}
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 
 @Singleton
-class ApplicationController @Inject()(val controllerComponents: ControllerComponents, val dataRepository: DataRepository, val services: LibraryService)(implicit val executionContext: ExecutionContext) extends BaseController{
+class ApplicationController @Inject()(val controllerComponents: ControllerComponents, val dataRepository: DataRepository, val services: LibraryService, val applicationService: ApplicationService)(implicit val executionContext: ExecutionContext) extends BaseController{
 
   def index(): Action[AnyContent] = Action.async { implicit request =>
     val books: Future[Seq[DataModel]] = dataRepository.collection.find().toFuture()
-    books.map(items => Json.toJson(items)).map(result => Ok(result))
+    books.map(items => Json.toJson(items)).map(result => Ok(result)) //why cant i wrap the whole thing in an Ok?
+
   }
 
-  def create(): Action[JsValue] = Action.async(parse.json) { implicit request =>
+//  def index2(): Action[AnyContent] = Action.async { implicit request =>
+//    val books: Future[Seq[DataModel]] = dataRepository.collection.find().toFuture(x)
+//    books.map(items => Json.toJson(items)).map(theJson => Ok(theJson))
+//  }
+
+
+  def create(): Action[JsValue] = Action.async(parse.json) { implicit request => //calling the parsed json request
     request.body.validate[DataModel] match {
-      case JsSuccess(dataModel, _) =>
-        dataRepository.create(dataModel).map(_ => Created)
+      case JsSuccess(dataModel, _) => //dataModel is the body of the json request (rather than request.body)
+        dataRepository.create(dataModel).map( _ => Created)
       case JsError(_) => Future(BadRequest)
     }
   }
 
-  def read(id: String): Action[AnyContent] = Action.async { implicit request =>
-    val book = dataRepository.read(id)
-    book.map (items => Json.toJson(items)).map(result => Ok(result))
+  def createExperiement(): = Action.async(parse.json) { implicit request =>
+    applicationService.create(request).map {
+      case Right(JsValue) => Ok
+      case Left //error
+
+    }
+  }
+
+//  def create(book: DataModel): Action[AnyContent] =  Action.async(parse.json) { implicit request =>
+//    applicationService.create(DataModel.formats.writes(book)).map{
+//      case Right (book: JsValue) => Ok(book)
+//      case Left (e) => Status(e.httpResponseStatus)(Json.toJson(e.reason))
+//    }
+//
+//  }
+
+//  def read(id: String): Action[AnyContent] = Action.async { implicit request =>
+//    val book = dataRepository.read(id)
+//    book.map (items => Json.toJson(items)).map(result => Ok(result))
+////    book.map(items => Ok(Json.toJson(items))) //an Ok, bad request etc can contain a Json value
+//  }
+
+  def read (id: String): Action[AnyContent] = Action.async { implicit request =>
+    applicationService.read(id).map{
+      case Right(book) => Ok(DataModel.formats.writes(book))
+      case Left(e) => Status(e.httpResponseStatus)(Json.toJson(e.reason))
+    }
   }
 
   def update(id: String): Action[JsValue]= Action.async(parse.json) { implicit request =>
@@ -41,10 +71,18 @@ class ApplicationController @Inject()(val controllerComponents: ControllerCompon
     }
   }
 
-  def delete(id: String) = Action.async {implicit request =>
-    val bookDelete = dataRepository.delete(id)
-    Future(Accepted)
+//  def delete(id: String) = Action.async {implicit request =>
+//    val bookDelete = dataRepository.delete(id)
+//    Future(Accepted)
+//    }
+
+  def delete(id: String): Action[AnyContent]= Action.async {implicit request =>
+    applicationService.delete(id).map {
+      case Right(bool) => Ok
+      case Left(e) => Status(e.httpResponseStatus)(Json.toJson(e.reason))
     }
+
+  }
 
 //  def getGoogleBook(search: String, term: String): Action[AnyContent] = Action.async { implicit request =>
 //    val bookjson = services.getGoogleBook(search = search, term = term)

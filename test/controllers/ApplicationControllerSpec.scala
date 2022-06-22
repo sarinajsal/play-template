@@ -4,19 +4,21 @@ import akka.http.scaladsl.model.HttpHeader.ParsingResult.Ok
 import baseSpec.BaseSpecWithApplication
 import models.DataModel
 import play.api.test.FakeRequest
-import play.api.http.Status
+import play.api.http.{Status, dateFormat}
 import play.api.libs.json.{JsNull, JsValue, Json}
 import play.api.test.Helpers.{contentAsJson, defaultAwaitTimeout, status}
-import play.api.mvc.{Result, Results}
+import play.api.mvc.{AnyContentAsEmpty, Result, Results}
 
 import scala.concurrent.Future
+import scala.tools.nsc.interpreter.Naming.sessionNames.result
 
 class ApplicationControllerSpec extends BaseSpecWithApplication{
 
   val TestApplicationController = new ApplicationController( //creating an instance of the controller
     component,
     repository,
-    service
+    service,
+    appservice
   )
 
   private val dataModel: DataModel = DataModel( //a test data model
@@ -57,23 +59,44 @@ class ApplicationControllerSpec extends BaseSpecWithApplication{
 
 
   "ApplicationController .read ss" should {
-  beforeEach()
-    "find a book in the database by id" in {
 
-      val request: FakeRequest[JsValue] = buildGet("/api/${dataModel._id}").withBody[JsValue](Json.toJson(dataModel)) //why is jsval in square brakcets
-      val createdResult: Future[Result] = TestApplicationController.create()(request)
+    beforeEach()
 
-      //Hint: You could use status(createdResult) shouldBe Status.CREATED to check this has worked again
+    "find a book in the database by id and return an Action[AnyContent] ie status result Ok containing book Json" in {
 
-      val readResult: Future[Result] = TestApplicationController.read("abcd")(FakeRequest())
+      val buildRequest: FakeRequest[JsValue] = buildPost("/create").withBody[JsValue](Json.toJson(dataModel)) //making a fake request
+      val buildResult: Future[Result] = TestApplicationController.create()(buildRequest) //the request is not an argument
+      val getRequest: FakeRequest[AnyContentAsEmpty.type] = buildGet("/read/abcd")
+      val getResult: Future[Result] = TestApplicationController.read("abcd")(getRequest)  //ordering of stuff here?
 
-      status(readResult) shouldBe Status.OK
-      contentAsJson(readResult).as[DataModel] shouldBe DataModel("abcd", "test name", "test description", 100)
+      status(getResult) shouldBe Status.OK
+      status(buildResult) shouldBe Status.CREATED
+      contentAsJson(getResult).as[DataModel] shouldBe (DataModel("abcd", "test name", "test description", 100))
       afterEach()
     }
+
+
+
+
+//  beforeEach()
+//    "find a book in the database by id" in {
+//
+//      val request: FakeRequest[JsValue] = buildGet(s"/api/${dataModel._id}").withBody[JsValue](Json.toJson(dataModel)) //why is jsval in square brakcets
+//      val createdResult: Future[Result] = TestApplicationController.create()(request)
+//
+//      //Hint: You could use status(createdResult) shouldBe Status.CREATED to check this has worked again
+//
+//      val readResult: Future[Result] = TestApplicationController.read("abcd")(FakeRequest())
+//
+//      status(readResult) shouldBe Status.OK
+//      contentAsJson(readResult).as[DataModel] shouldBe Right(DataModel("abcd", "test name", "test description", 100))
+//      afterEach()
+//    }
+
+
     "not take an empty id string" in {
       beforeEach()
-      val request: FakeRequest[JsValue] = buildGet("/api/{}").withBody[JsValue](Json.toJson("{}"))
+      val request: FakeRequest[JsValue] = buildGet("/read/{}").withBody[JsValue](Json.toJson("{}"))
       val createdResult: Future[Result] = TestApplicationController.create()(request)
 
       status(createdResult) shouldBe Status.BAD_REQUEST
@@ -91,9 +114,24 @@ class ApplicationControllerSpec extends BaseSpecWithApplication{
 
       val deletedResult: Future[Result] = TestApplicationController.delete("abcd")(FakeRequest())
 
-      status(deletedResult) shouldBe Status.ACCEPTED
+      status(deletedResult) shouldBe Status.OK
     }
     afterEach()
+  }
+
+  "applicationController.delete w error handling" should {
+    beforeEach()
+    "delete a book in the db by id" in {
+      val buildRequest: FakeRequest[JsValue] = buildPost("/create").withBody[JsValue](Json.toJson(dataModel)) //making a fake request
+      val buildResult: Future[Result] = TestApplicationController.create()(buildRequest)
+      status(buildResult) shouldBe Status.CREATED
+
+      val deleteResult: Future[Result] = TestApplicationController.delete("abcd")(fakeRequest)
+
+      status(deleteResult) shouldBe Status.OK
+
+
+    }
   }
 
 //  "ApplicationController .update" should{
