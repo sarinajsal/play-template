@@ -34,10 +34,10 @@ package repositories
 //        .toFuture()
 //        .map(_ => book)
 
-    def create(book: DataModel): = {
-      val x = collection.insertOne(book).toFuture()
+    def create(book: DataModel):Future[Either[APIError, DataModel]] = {
+      collection.insertOne(book).toFuture()
         .flatMap{
-        case x if x.wasAcknowledged().equals(true)  => Future(Right(book))
+        case x if x.wasAcknowledged().equals(true)  => Future(Right(book: DataModel))
         case _ => Future(Left(APIError.BadAPIResponse(404, "cant create book/book not inserted")))
       }
     }

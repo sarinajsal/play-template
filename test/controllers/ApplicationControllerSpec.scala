@@ -36,10 +36,10 @@ class ApplicationControllerSpec extends BaseSpecWithApplication{
   )
 
   "ApplicationController .create " should {
-
+    beforeEach()
     "create a book in the database" in {
-      beforeEach()
-      val request: FakeRequest[JsValue] = buildPost("/api/create").withBody[JsValue](Json.toJson(dataModel))
+
+      val request: FakeRequest[JsValue] = buildPost("/create").withBody[JsValue](Json.toJson(dataModel))
       val createdResult: Future[Result] = TestApplicationController.create()(request)
 
       status(createdResult) shouldBe Status.CREATED

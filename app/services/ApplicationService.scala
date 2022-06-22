@@ -39,10 +39,10 @@ class ApplicationService @Inject()( val dataRepository: DataRepository)(implicit
     }
   }
 
-  def create(inputRequest: Request[JsValue]):Future[Either[APIError, DataModel.type]] = {
+  def create(inputRequest: Request[JsValue]):Future[Either[APIError, DataModel]] = {
     inputRequest.body.validate[DataModel] match {
-      case (JsSuccess(datamodel, _)) => 
-        dataRepository.create(datamodel)
+      case (JsSuccess(datamodel, _)) =>
+        (dataRepository.create(datamodel))
       case JsError(_) => Future(Left(APIError.BadAPIResponse(404, "service checked could not make book")))
     }
 

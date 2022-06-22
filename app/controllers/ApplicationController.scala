@@ -34,10 +34,10 @@ class ApplicationController @Inject()(val controllerComponents: ControllerCompon
     }
   }
 
-  def createExperiement(): = Action.async(parse.json) { implicit request =>
+  def createExperiement():Action[JsValue] = Action.async(parse.json) { implicit request =>
     applicationService.create(request).map {
-      case Right(JsValue) => Ok
-      case Left //error
+      case (Right(book)) => Ok
+      case Left (e) => Status(e.httpResponseStatus)(e.reason)
 
     }
   }
