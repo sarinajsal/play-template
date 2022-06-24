@@ -1,6 +1,6 @@
 // @GENERATOR:play-routes-compiler
 // @SOURCE:/Users/sarina.salamon/Documents/play-template/conf/routes
-// @DATE:Mon Jun 13 14:18:37 BST 2022
+// @DATE:Fri Jun 24 15:06:46 BST 2022
 
 import play.api.routing.JavaScriptReverseRoute
 
@@ -24,6 +24,26 @@ package controllers.javascript {
       """
         function(id0) {
           return _wA({method:"GET", url:"""" + _prefix + { _defaultPrefix } + """" + "read/" + encodeURIComponent((""" + implicitly[play.api.mvc.PathBindable[String]].javascriptUnbind + """)("id", id0))})
+        }
+      """
+    )
+  
+    // @LINE:21
+    def updateName: JavaScriptReverseRoute = JavaScriptReverseRoute(
+      "controllers.ApplicationController.updateName",
+      """
+        function(id0) {
+          return _wA({method:"PUT", url:"""" + _prefix + { _defaultPrefix } + """" + "updateOne/" + encodeURIComponent((""" + implicitly[play.api.mvc.PathBindable[String]].javascriptUnbind + """)("id", id0))})
+        }
+      """
+    )
+  
+    // @LINE:19
+    def getBookByName: JavaScriptReverseRoute = JavaScriptReverseRoute(
+      "controllers.ApplicationController.getBookByName",
+      """
+        function(name0) {
+          return _wA({method:"GET", url:"""" + _prefix + { _defaultPrefix } + """" + "read/" + encodeURIComponent((""" + implicitly[play.api.mvc.PathBindable[String]].javascriptUnbind + """)("name", name0))})
         }
       """
     )

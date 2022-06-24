@@ -1,6 +1,6 @@
 package controllers
 
-import models.{APIError, DataModel}
+import models.{APIError, DataModel, UpdateOneName}
 import play.api.libs.json.Format.GenericFormat
 import play.api.libs.json.{JsBoolean, JsError, JsSuccess, JsValue, Json}
 import play.api.mvc.{Action, AnyContent, BaseController, ControllerComponents, Results}
@@ -26,17 +26,17 @@ class ApplicationController @Inject()(val controllerComponents: ControllerCompon
 //  }
 
 
-  def create(): Action[JsValue] = Action.async(parse.json) { implicit request => //calling the parsed json request
-    request.body.validate[DataModel] match {
-      case JsSuccess(dataModel, _) => //dataModel is the body of the json request (rather than request.body)
-        dataRepository.create(dataModel).map( _ => Created)
-      case JsError(_) => Future(BadRequest)
-    }
-  }
+//  def create(): Action[JsValue] = Action.async(parse.json) { implicit request => //calling the parsed json request
+//    request.body.validate[DataModel] match {
+//      case JsSuccess(dataModel, _) => //dataModel is the body of the json request (rather than request.body)
+//        dataRepository.create(dataModel).map( _ => Created)
+//      case JsError(_) => Future(BadRequest)
+//    }
+//  }
 
-  def createExperiement():Action[JsValue] = Action.async(parse.json) { implicit request =>
-    applicationService.create(request).map {
-      case (Right(book)) => Ok
+  def create():Action[JsValue] = Action.async(parse.json) { implicit request => //getting an action and then parsing json
+    applicationService.create(request).map { //implicit request, you will be getting a request
+      case (Right(())) => Created
       case Left (e) => Status(e.httpResponseStatus)(e.reason)
 
     }
@@ -64,11 +64,16 @@ class ApplicationController @Inject()(val controllerComponents: ControllerCompon
   }
 
   def update(id: String): Action[JsValue]= Action.async(parse.json) { implicit request =>
-    request.body.validate[DataModel] match {
-      case JsSuccess(dataModel,_) =>
-        dataRepository.update(id, dataModel).map(_ => Accepted) //calling the data access layer, give it necessary arguments and return a status code
-      case JsError(_)=> Future(BadRequest)
+    applicationService.update(request, id).map{
+      case Right(()) => Accepted
+      case Left(e) => Status(e.httpResponseStatus)(Json.toJson(e.reason))
     }
+
+//    request.body.validate[DataModel] match {
+//      case JsSuccess(dataModel,_) =>
+//        dataRepository.update(id, dataModel).map(_ => Accepted) //calling the data access layer, give it necessary arguments and return a status code
+//      case JsError(_)=> Future(BadRequest)
+//    }
   }
 
 //  def delete(id: String) = Action.async {implicit request =>
@@ -90,12 +95,33 @@ class ApplicationController @Inject()(val controllerComponents: ControllerCompon
 //  } //use error handling?
 
 
+  def getBookByName(name: String): Action[AnyContent] = Action.async { implicit request =>
+    applicationService.getBookByName(name).map{
+      case Right(book: DataModel) => Ok(Json.toJson(book))
+      case Left(e) => BadRequest
+    }
+  }
+
+
+
   def getGoogleBook(search: String, term: String): Action[AnyContent] = Action.async { implicit request => //status are actions ie the return type
      services.getGoogleBook(search = search, term = term).value.map {
       case Right(book) =>  Ok(Json.toJson(book)) //Ok(DataModel.formats.writes(book))
       case Left(error) => BadRequest //can accept arguments
     }
   }
+
+
+
+  def updateName(id: String): Action[JsValue] = Action.async(parse.json){ implicit request =>
+    applicationService.updateOneName(request, id).map{
+      case Right(updatedBookName) => Ok(Json.toJson(updatedBookName))
+      case Left(e) => BadRequest
+    }
+  }
+
+
+
 
   //actions? http responses ie the error codes wrapping data models
 

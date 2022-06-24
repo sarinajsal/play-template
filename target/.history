@@ -89,3 +89,7 @@ testOnly *ApplicationControllerSpec* -- -z "ss"
 testOnly *LibraryServiceSpec* -- -z "ss"
 testOnly *ApplicationServiceSpec* -- -z "ss"
 testOnly *ApplicationControllerSpec* -- -z "ss"
+run
+run 9111
+testOnly *ApplicationControllerSpec* -- -z "ss"
+testOnly *ApplicationControllerSpec* -- -z "sjs"

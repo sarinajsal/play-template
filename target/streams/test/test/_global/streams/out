@@ -1,22 +1,63 @@
 [0m[[0m[0mdebug[0m] [0m[0mjavaOptions: Vector()[0m
 [0m[[0m[0mdebug[0m] [0m[0mForking tests - parallelism = false[0m
 [0m[[0m[0mdebug[0m] [0m[0mCreate a single-thread test executor[0m
-[0m[[0m[0mdebug[0m] [0m[0mRunner for org.scalatest.tools.Framework produced 1 initial tasks for 1 tests.[0m
-[0m[[0m[0mdebug[0m] [0m[0m  Running TaskDef(controllers.HomeControllerSpec, sbt.ForkMain$SubclassFingerscan@342d7eec, false, [SuiteSelector])[0m
+[0m[[0m[0mdebug[0m] [0m[0mRunner for org.scalatest.tools.Framework produced 3 initial tasks for 3 tests.[0m
+[0m[[0m[0mdebug[0m] [0m[0m  Running TaskDef(controllers.HomeControllerSpec, sbt.ForkMain$SubclassFingerscan@6d823d3d, false, [SuiteSelector])[0m
 [0m[[0m[0minfo[0m] [0m[0m[32mHomeControllerSpec:[0m[0m
 [0m[[0m[0minfo[0m] [0m[0m[32mHomeController GET[0m[0m
 [0m[[0m[0minfo[0m] [0m[0m[32m- should render the index page from a new instance of controller[0m[0m
 [0m[[0m[0minfo[0m] [0m[0m[32m- should render the index page from the application[0m[0m
 [0m[[0m[0minfo[0m] [0m[0m[32m- should render the index page from the router[0m[0m
 [0m[[0m[0mdebug[0m] [0m[0m    Produced 0 nested tasks and 3 events.[0m
+[0m[[0m[0mdebug[0m] [0m[0m  Running TaskDef(controllers.ApplicationControllerSpec, sbt.ForkMain$SubclassFingerscan@30459087, false, [SuiteSelector])[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mApplicationControllerSpec:[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mApplicationController .create [0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[31m- should create a book in the database *** FAILED ***[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[31m  200 was not equal to Ok (ApplicationControllerSpec.scala:45)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[31m- should not take an empty json string *** FAILED ***[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[31m  500 was not equal to 400 (ApplicationControllerSpec.scala:54)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mApplicationController .read [0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[31m- should find a book in the database by id and return an Action[AnyContent] ie status result Ok containing book Json *** FAILED ***[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[31m  500 was not equal to 200 (ApplicationControllerSpec.scala:72)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[31m- should not take an empty id string *** FAILED ***[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[31m  500 was not equal to 400 (ApplicationControllerSpec.scala:102)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mApplicationController .delete[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[31m- should delete a book in the database by id *** FAILED ***[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[31m  200 was not equal to 201 (ApplicationControllerSpec.scala:113)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mapplicationController.delete w error handling[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[31m- should delete a book in the db by id *** FAILED ***[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[31m  200 was not equal to 201 (ApplicationControllerSpec.scala:127)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mApplicationController .update()[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[31m- should find a book in the database by id and update the fields *** FAILED ***[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[31m  200 was not equal to 201 (ApplicationControllerSpec.scala:161)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- should not update if all fields are not entered[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mApplicationController .index[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- should return OK[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mApplicationController .create()[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mApplicationController .read(id:String)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[31m- should return OK *** FAILED ***[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[31m  500 was not equal to 200 (ApplicationControllerSpec.scala:199)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mApplicationController .update(id:String)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mApplicationController .delete(id:String)[0m[0m
+[0m[[0m[0mdebug[0m] [0m[0m    Produced 0 nested tasks and 10 events.[0m
+[0m[[0m[0mdebug[0m] [0m[0m  Running TaskDef(services.LibraryServiceSpec, sbt.ForkMain$SubclassFingerscan@4bb3726a, false, [SuiteSelector])[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mLibraryServiceSpec:[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mgetGoogleBook ss[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- should return a book[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- return an error ss[0m[0m
+[0m[[0m[0mdebug[0m] [0m[0m    Produced 0 nested tasks and 2 events.[0m
 [0m[[0m[0mdebug[0m] [0m[0mRunner for com.novocode.junit.JUnitFramework produced 0 initial tasks for 0 tests.[0m
 [0m[[0m[0minfo[0m] [0m[0mScalaTest[0m
-[0m[[0m[0minfo[0m] [0m[0m[36mRun completed in 5 seconds, 544 milliseconds.[0m[0m
-[0m[[0m[0minfo[0m] [0m[0m[36mTotal number of tests run: 3[0m[0m
-[0m[[0m[0minfo[0m] [0m[0m[36mSuites: completed 1, aborted 0[0m[0m
-[0m[[0m[0minfo[0m] [0m[0m[36mTests: succeeded 3, failed 0, canceled 0, ignored 0, pending 0[0m[0m
-[0m[[0m[0minfo[0m] [0m[0m[32mAll tests passed.[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[36mRun completed in 8 seconds, 76 milliseconds.[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[36mTotal number of tests run: 15[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[36mSuites: completed 3, aborted 0[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[36mTests: succeeded 7, failed 8, canceled 0, ignored 0, pending 0[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[31m*** 8 TESTS FAILED ***[0m[0m
 [0m[[0m[0mdebug[0m] [0m[0mSummary for JUnit not available.[0m
-[0m[[0m[0minfo[0m] [0m[0mPassed: Total 3, Failed 0, Errors 0, Passed 3[0m
+[0m[[0m[31merror[0m] [0m[0mFailed: Total 15, Failed 8, Errors 0, Passed 7[0m
 [0m[[0m[0mdebug[0m] [0m[0mPassed tests:[0m
 [0m[[0m[0mdebug[0m] [0m[0m	controllers.HomeControllerSpec[0m
+[0m[[0m[0mdebug[0m] [0m[0m	services.LibraryServiceSpec[0m
+[0m[[0m[31merror[0m] [0m[0mFailed tests:[0m
+[0m[[0m[31merror[0m] [0m[0m	controllers.ApplicationControllerSpec[0m
+[0m[[0m[31merror[0m] [0m[0m(Test / [31mtest[0m) sbt.TestsFailedException: Tests unsuccessful[0m

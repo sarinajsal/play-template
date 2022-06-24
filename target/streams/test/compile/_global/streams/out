@@ -1,6 +1,7 @@
-[0m[[0m[31merror[0m] [0m[0m/Users/sarina.salamon/Documents/play-template/test/services/LibraryServiceSpec.scala:55:42: type mismatch;[0m
-[0m[[0m[31merror[0m] [0m[0m found   : models.APIError.BadAPIResponse.type[0m
-[0m[[0m[31merror[0m] [0m[0m required: models.APIError[0m
-[0m[[0m[31merror[0m] [0m[0m      .returning(EitherT.fromEither(Left(apiErrorReturned))) //need to return an instance of future APIError[0m
-[0m[[0m[31merror[0m] [0m[0m                                         ^[0m
-[0m[[0m[31merror[0m] [0m[0mone error found[0m
+[0m[[0m[31merror[0m] [0m[0m/Users/sarina.salamon/Documents/play-template/test/controllers/ApplicationControllerSpec.scala:265:48: value deleteAll is not a member of repositories.DataRepository[0m
+[0m[[0m[31merror[0m] [0m[0m  override def beforeEach(): Unit = repository.deleteAll()[0m
+[0m[[0m[31merror[0m] [0m[0m                                               ^[0m
+[0m[[0m[31merror[0m] [0m[0m/Users/sarina.salamon/Documents/play-template/test/controllers/ApplicationControllerSpec.scala:266:47: value deleteAll is not a member of repositories.DataRepository[0m
+[0m[[0m[31merror[0m] [0m[0m  override def afterEach(): Unit = repository.deleteAll()[0m
+[0m[[0m[31merror[0m] [0m[0m                                              ^[0m
+[0m[[0m[31merror[0m] [0m[0mtwo errors found[0m

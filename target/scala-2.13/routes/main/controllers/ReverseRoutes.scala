@@ -1,6 +1,6 @@
 // @GENERATOR:play-routes-compiler
 // @SOURCE:/Users/sarina.salamon/Documents/play-template/conf/routes
-// @DATE:Mon Jun 13 14:18:37 BST 2022
+// @DATE:Fri Jun 24 15:06:46 BST 2022
 
 import play.api.mvc.Call
 
@@ -21,6 +21,18 @@ package controllers {
     def read(id:String): Call = {
       
       Call("GET", _prefix + { _defaultPrefix } + "read/" + play.core.routing.dynamicString(implicitly[play.api.mvc.PathBindable[String]].unbind("id", id)))
+    }
+  
+    // @LINE:21
+    def updateName(id:String): Call = {
+      
+      Call("PUT", _prefix + { _defaultPrefix } + "updateOne/" + play.core.routing.dynamicString(implicitly[play.api.mvc.PathBindable[String]].unbind("id", id)))
+    }
+  
+    // @LINE:19
+    def getBookByName(name:String): Call = {
+      
+      Call("GET", _prefix + { _defaultPrefix } + "read/" + play.core.routing.dynamicString(implicitly[play.api.mvc.PathBindable[String]].unbind("name", name)))
     }
   
     // @LINE:9

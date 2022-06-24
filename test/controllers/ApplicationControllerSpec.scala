@@ -2,7 +2,7 @@ package controllers
 
 import akka.http.scaladsl.model.HttpHeader.ParsingResult.Ok
 import baseSpec.BaseSpecWithApplication
-import models.DataModel
+import models.{DataModel, UpdateOneName}
 import play.api.test.FakeRequest
 import play.api.http.{Status, dateFormat}
 import play.api.libs.json.{JsNull, JsValue, Json}
@@ -35,10 +35,15 @@ class ApplicationControllerSpec extends BaseSpecWithApplication{
     100
   )
 
-  "ApplicationController .create " should {
-    beforeEach()
-    "create a book in the database" in {
+  private val updateOneNameDM: UpdateOneName = UpdateOneName(
+    "abcd",
+    "updatedName"
+  )
 
+  "ApplicationController .create  " should {
+
+    "create a book in the database " in {
+      beforeEach()
       val request: FakeRequest[JsValue] = buildPost("/create").withBody[JsValue](Json.toJson(dataModel))
       val createdResult: Future[Result] = TestApplicationController.create()(request)
 
@@ -58,7 +63,7 @@ class ApplicationControllerSpec extends BaseSpecWithApplication{
 
 
 
-  "ApplicationController .read ss" should {
+  "ApplicationController .read " should {
 
     beforeEach()
 
@@ -104,20 +109,20 @@ class ApplicationControllerSpec extends BaseSpecWithApplication{
     }
   }
 
-  "ApplicationController .delete" should {
-    beforeEach()
-    "delete a book in the database by id" in {
-
-      val request: FakeRequest[JsValue] = buildGet("/api/${dataModel._id}").withBody[JsValue](Json.toJson(dataModel))
-      val createdResult: Future[Result] = TestApplicationController.create()(request)
-      status(createdResult) shouldBe Status.CREATED
-
-      val deletedResult: Future[Result] = TestApplicationController.delete("abcd")(FakeRequest())
-
-      status(deletedResult) shouldBe Status.OK
-    }
-    afterEach()
-  }
+//  "ApplicationController .delete" should {
+//    beforeEach()
+//    "delete a book in the database by id" in {
+//
+//      val request: FakeRequest[JsValue] = buildGet("/api/${dataModel._id}").withBody[JsValue](Json.toJson(dataModel))
+//      val createdResult: Future[Result] = TestApplicationController.create()(request)
+//      status(createdResult) shouldBe Status.CREATED
+//
+//      val deletedResult: Future[Result] = TestApplicationController.delete("abcd")(FakeRequest())
+//
+//      status(deletedResult) shouldBe Status.OK
+//    }
+//    afterEach()
+//  }
 
   "applicationController.delete w error handling" should {
     beforeEach()
@@ -129,8 +134,18 @@ class ApplicationControllerSpec extends BaseSpecWithApplication{
       val deleteResult: Future[Result] = TestApplicationController.delete("abcd")(fakeRequest)
 
       status(deleteResult) shouldBe Status.OK
+      afterEach()
+    }
 
+    "throw an error if id does not exist sjs" in{
+      val buildRequest: FakeRequest[JsValue] = buildPost("/create").withBody[JsValue](Json.toJson(dataModel)) //making a fake request
+      val buildResult: Future[Result] = TestApplicationController.create()(buildRequest)
+      status(buildResult) shouldBe Status.CREATED
 
+      val deleteResult: Future[Result] = TestApplicationController.delete("abc")(fakeRequest)
+
+      status(deleteResult) shouldBe Status.INTERNAL_SERVER_ERROR
+      afterEach()
     }
   }
 
@@ -150,9 +165,9 @@ class ApplicationControllerSpec extends BaseSpecWithApplication{
 //    }
 //  }
 
-  "ApplicationController .update()" should {
+  "ApplicationController .update() with error handling" should {
 
-    "find a book in the database by id and update the fields" in {
+    "find a book in the database by id and update the fields ss" in {
       beforeEach()
       val request: FakeRequest[JsValue] = buildPost("/api").withBody[JsValue](Json.toJson(dataModel))
       val updateRequest: FakeRequest[JsValue] = buildPut("/update/abcd").withBody[JsValue](Json.toJson(updatedDataModel))
@@ -171,6 +186,44 @@ class ApplicationControllerSpec extends BaseSpecWithApplication{
       //pattern match?
     }
 
+  }
+
+
+  "ApplicationController .getBookByName" should {
+
+    "find a book by name and return book in Ok status " in{
+      beforeEach()
+      val buildRequest: FakeRequest[JsValue] = buildPost("/create").withBody[JsValue](Json.toJson(dataModel))
+      val builderResult: Future[Result] = TestApplicationController.create()(buildRequest)
+      status(builderResult) shouldBe Status.CREATED
+
+      val buildNameGetRequest: FakeRequest[AnyContentAsEmpty.type] = buildGet("/read/test name")
+      val buildNameGetResult: Future[Result] = TestApplicationController.getBookByName("test name")(buildNameGetRequest)
+
+      status(buildNameGetResult) shouldBe Status.OK
+      contentAsJson(buildNameGetResult).as[DataModel] shouldBe (DataModel("abcd", "test name", "test description", 100))
+
+      afterEach()
+    }
+  }
+
+
+  "applicationController .updateName sjs" should {
+
+    "update the name only" in {
+      beforeEach()
+      val buildRequest: FakeRequest[JsValue] = buildPost("/create").withBody[JsValue](Json.toJson(dataModel))
+      val builderResult: Future[Result] = TestApplicationController.create()(buildRequest)
+      status(builderResult) shouldBe Status.CREATED
+
+      val buildUpdate: FakeRequest[JsValue] = buildPut("/updateOne/abcd").withBody[JsValue](Json.toJson(updateOneNameDM))
+      val buildUpdateResult: Future[Result] = TestApplicationController.updateName("abcd")(buildUpdate)
+
+      status(buildUpdateResult) shouldBe Status.OK
+      contentAsJson(buildUpdateResult).as[DataModel] shouldBe DataModel("abcd", "updatedName", "test description", 100) //this will not work as we are not returning the updates result in the body of accepted action
+      afterEach()
+
+    }
   }
 
 

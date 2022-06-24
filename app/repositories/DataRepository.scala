@@ -1,9 +1,10 @@
 package repositories
 
   import com.mongodb.client.result.DeleteResult
-  import models.{APIError, DataModel}
+  import com.mongodb.session.ClientSession
+  import models.{APIError, DataModel, UpdateOneName}
   import org.mongodb.scala.bson.conversions.Bson
-  import org.mongodb.scala.model.Filters.empty
+  import org.mongodb.scala.model.Filters.{bsonType, empty}
   import org.mongodb.scala.model._
   import org.mongodb.scala.result
   import play.api.libs.json.{JsBoolean, JsValue}
@@ -12,6 +13,12 @@ package repositories
 
   import javax.inject.{Inject, Singleton}
   import scala.concurrent.{ExecutionContext, Future}
+  import org.mongodb.scala._
+  import org.mongodb.scala.model._
+  import org.mongodb.scala.model.Filters._
+  import org.mongodb.scala.model.Updates._
+  import org.mongodb.scala.model.UpdateOptions
+  import org.mongodb.scala.bson.BsonObjectId
 
 
 
@@ -34,10 +41,10 @@ package repositories
 //        .toFuture()
 //        .map(_ => book)
 
-    def create(book: DataModel):Future[Either[APIError, DataModel]] = {
+    def create(book: DataModel):Future[Either[APIError, Unit]] = {
       collection.insertOne(book).toFuture()
         .flatMap{
-        case x if x.wasAcknowledged().equals(true)  => Future(Right(book: DataModel))
+        case x if x.wasAcknowledged().equals(true)  => Future(Right())
         case _ => Future(Left(APIError.BadAPIResponse(404, "cant create book/book not inserted")))
       }
     }
@@ -45,6 +52,10 @@ package repositories
     private def byID(id: String): Bson =
       Filters.and(
         Filters.equal("_id", id)
+      )
+    private def byName(name: String): Bson =
+      Filters.and(
+        Filters.equal("name", name)
       )
 
     def read(id: String): Future[Either[APIError, DataModel]]=
@@ -55,12 +66,23 @@ package repositories
           Future(Left(APIError.BadAPIResponse(404, "NO BOOK?")))
       }
 
-    def update(id: String, book: DataModel): Future[result.UpdateResult] =
+    def getBookByName(name: String): Future[Either[APIError, DataModel]] = {
+      collection.find(byName(name)).headOption.flatMap {
+        case Some(data) => Future(Right(data)) //explain some data? go over some
+        case _ => Future(Left(APIError.BadAPIResponse(404, "CANT FIND BY NAME")))
+      }
+    }
+
+    def update(id: String, book: DataModel): Future[Either[APIError, Unit]] =
       collection.replaceOne(
         filter = byID(id),
         replacement = book,
         options = new ReplaceOptions().upsert(true) //What happens when we set this to false?
-      ).toFuture()
+      ).toFuture().flatMap {
+        case x if x.wasAcknowledged().equals(true) => Future(Right(()))
+        case _ => Future(Left(APIError.BadAPIResponse(404, "COULD NOT UPDATE")))
+      }
+
 
     def delete(id: String): Future[Either[APIError, Boolean]] = {
       val x = collection.deleteOne(
@@ -72,6 +94,56 @@ package repositories
     }
 
 
+
+    def x(id: String, newbook: DataModel) : Unit = {
+      collection.updateOne(equal("_id", "abcd"),set("_id", "abc"))
+    }
+
+
+    def updateName(id: String, name: UpdateOneName): Future[Either[APIError, DataModel]] = {
+      collection.findOneAndUpdate(equal("_id", s"${name.id}"),
+        set("name", s"${name.name}"),
+        options = FindOneAndUpdateOptions().returnDocument(ReturnDocument.AFTER)).headOption().flatMap{
+        case Some(newData) => Future(Right(newData))
+        case _ => Future(Left(APIError.BadAPIResponse(404, "CANNOT UPDATE NAME")))
+      }
+
+    }
+
+
+
+//
+//    def updateByOnefield(id: String, nameOption: Option[String], descriptionOption: Option[String], salesOption: Option[Int]): SingleObservable[DataModel] = {
+//      if (nameOption.isDefined){
+//        collection.findOneAndUpdate(equal(
+//          "_id", s"${id}"), set("name", s"${nameOption}"), options = FindOneAndUpdateOptions().returnDocument(ReturnDocument.AFTER))
+//      }else if (descriptionOption.isDefined) {
+//        collection.findOneAndUpdate(equal(
+//          "_id", s"${id}"), set("description", s"${descriptionOption}"), options = FindOneAndUpdateOptions().returnDocument(ReturnDocument.AFTER)
+//        }else if(salesOption.isDefined){
+//        collection.findOneAndUpdate(equal(
+//          "_id", s"${id}"), set("numSales", s"${salesOption}"), options = FindOneAndUpdateOptions().returnDocument(ReturnDocument.AFTER))
+//        else{
+//
+//        }
+//      }
+
+//      collection.findOneAndUpdate(equal
+//        filter = (byID(id)),
+//        update = updatedBook,
+//        FindOneAndUpdateOptions().returnDocument(ReturnDocument.AFTER))
+
+      //      val x = collection.findOneAndUpdate(
+      //        filter = (byID(id)),
+      //        update = updatedBook,
+      //        options = new FindOneAndUpdateOptions)
+//    }
+//
+//
+//
+//
+////{"_id": "abcd"}, {$set: {"numSales": 2}},
+//
     def deleteAll(): Future[Unit] = collection.deleteMany(empty()).toFuture().map(_ => ()) //Hint: needed for tests
 
   }
