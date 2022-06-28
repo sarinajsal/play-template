@@ -1,6 +1,6 @@
 package controllers
 
-import models.{APIError, DataModel, UpdateOneName}
+import models.{APIError, DataModel, UpdateOneThing}
 import play.api.libs.json.Format.GenericFormat
 import play.api.libs.json.{JsBoolean, JsError, JsSuccess, JsValue, Json}
 import play.api.mvc.{Action, AnyContent, BaseController, ControllerComponents, Results}
@@ -113,12 +113,14 @@ class ApplicationController @Inject()(val controllerComponents: ControllerCompon
 
 
 
-  def updateName(id: String): Action[JsValue] = Action.async(parse.json){ implicit request =>
-    applicationService.updateOneName(request, id).map{
+  def updateOneElement(id: String): Action[JsValue] = Action.async(parse.json){ implicit request =>
+    applicationService.updateOneElement(request, id).map{
       case Right(updatedBookName) => Ok(Json.toJson(updatedBookName))
       case Left(e) => BadRequest
     }
   }
+
+
 
 
 

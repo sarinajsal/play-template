@@ -18,5 +18,7 @@ DELETE     /delete/:id     controllers.ApplicationController.delete(id: String)
 
  GET    /read/:name     controllers.ApplicationController.getBookByName(name: String)
 
- PUT    /updateOne/:id  controllers.ApplicationController.updateName(id: String)
+
+
+ PUT /updateOneElement/:id    controllers.ApplicationController.updateOneElement(id: String)
 

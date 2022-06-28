@@ -1,6 +1,6 @@
 // @GENERATOR:play-routes-compiler
 // @SOURCE:/Users/sarina.salamon/Documents/play-template/conf/routes
-// @DATE:Fri Jun 24 15:06:46 BST 2022
+// @DATE:Mon Jun 27 15:01:28 BST 2022
 
 import play.api.mvc.Call
 
@@ -23,12 +23,6 @@ package controllers {
       Call("GET", _prefix + { _defaultPrefix } + "read/" + play.core.routing.dynamicString(implicitly[play.api.mvc.PathBindable[String]].unbind("id", id)))
     }
   
-    // @LINE:21
-    def updateName(id:String): Call = {
-      
-      Call("PUT", _prefix + { _defaultPrefix } + "updateOne/" + play.core.routing.dynamicString(implicitly[play.api.mvc.PathBindable[String]].unbind("id", id)))
-    }
-  
     // @LINE:19
     def getBookByName(name:String): Call = {
       
@@ -45,6 +39,12 @@ package controllers {
     def getGoogleBook(search:String, term:String): Call = {
       
       Call("GET", _prefix + { _defaultPrefix } + "library/google/" + play.core.routing.dynamicString(implicitly[play.api.mvc.PathBindable[String]].unbind("search", search)) + "/" + play.core.routing.dynamicString(implicitly[play.api.mvc.PathBindable[String]].unbind("term", term)))
+    }
+  
+    // @LINE:23
+    def updateOneElement(id:String): Call = {
+      
+      Call("PUT", _prefix + { _defaultPrefix } + "updateOneElement/" + play.core.routing.dynamicString(implicitly[play.api.mvc.PathBindable[String]].unbind("id", id)))
     }
   
     // @LINE:15

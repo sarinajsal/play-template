@@ -2,7 +2,7 @@ package controllers
 
 import akka.http.scaladsl.model.HttpHeader.ParsingResult.Ok
 import baseSpec.BaseSpecWithApplication
-import models.{DataModel, UpdateOneName}
+import models.{DataModel, UpdateOneThing}
 import play.api.test.FakeRequest
 import play.api.http.{Status, dateFormat}
 import play.api.libs.json.{JsNull, JsValue, Json}
@@ -35,9 +35,19 @@ class ApplicationControllerSpec extends BaseSpecWithApplication{
     100
   )
 
-  private val updateOneNameDM: UpdateOneName = UpdateOneName(
-    "abcd",
+  private val updateOneNameDM: UpdateOneThing = UpdateOneThing(
+    "name",
     "updatedName"
+  )
+
+  private val updateOneDescriptionDM: UpdateOneThing = UpdateOneThing(
+    "description",
+    "updatedDescription"
+  )
+
+  private val updateOneNumSalesDM: UpdateOneThing = UpdateOneThing(
+    "numSales",
+    "200"
   )
 
   "ApplicationController .create  " should {
@@ -208,7 +218,7 @@ class ApplicationControllerSpec extends BaseSpecWithApplication{
   }
 
 
-  "applicationController .updateName sjs" should {
+  "applicationController .updateOneElement " should {
 
     "update the name only" in {
       beforeEach()
@@ -216,14 +226,46 @@ class ApplicationControllerSpec extends BaseSpecWithApplication{
       val builderResult: Future[Result] = TestApplicationController.create()(buildRequest)
       status(builderResult) shouldBe Status.CREATED
 
-      val buildUpdate: FakeRequest[JsValue] = buildPut("/updateOne/abcd").withBody[JsValue](Json.toJson(updateOneNameDM))
-      val buildUpdateResult: Future[Result] = TestApplicationController.updateName("abcd")(buildUpdate)
+      val buildUpdate: FakeRequest[JsValue] = buildPut("/updateOneElement/abcd").withBody[JsValue](Json.toJson(updateOneNameDM))
+      val buildUpdateResult: Future[Result] = TestApplicationController.updateOneElement("abcd")(buildUpdate)
 
       status(buildUpdateResult) shouldBe Status.OK
       contentAsJson(buildUpdateResult).as[DataModel] shouldBe DataModel("abcd", "updatedName", "test description", 100) //this will not work as we are not returning the updates result in the body of accepted action
       afterEach()
 
     }
+
+    "update only the description sjs" in {
+
+      beforeEach()
+      val buildRequest: FakeRequest[JsValue] = buildPost("/create").withBody[JsValue](Json.toJson(dataModel))
+      val builderResult: Future[Result] = TestApplicationController.create()(buildRequest)
+      status(builderResult) shouldBe Status.CREATED
+
+      val buildUpdate: FakeRequest[JsValue] = buildPut("/updateOneElement/abcd").withBody[JsValue](Json.toJson(updateOneDescriptionDM))
+      val buildUpdateResult: Future[Result] = TestApplicationController.updateOneElement("abcd")(buildUpdate)
+
+      status(buildUpdateResult) shouldBe Status.OK
+      contentAsJson(buildUpdateResult).as[DataModel] shouldBe DataModel("abcd", "test name", "updatedDescription", 100) //this will not work as we are not returning the updates result in the body of accepted action
+      afterEach()
+
+    }
+
+    "update on the numSales sjs" in {
+      beforeEach()
+      val buildRequest: FakeRequest[JsValue] = buildPost("/create").withBody[JsValue](Json.toJson(dataModel))
+      val builderResult: Future[Result] = TestApplicationController.create()(buildRequest)
+      status(builderResult) shouldBe Status.CREATED
+
+      val buildUpdate: FakeRequest[JsValue] = buildPut("/updateOneElement/abcd").withBody[JsValue](Json.toJson(updateOneNumSalesDM))
+      val buildUpdateResult: Future[Result] = TestApplicationController.updateOneElement("abcd")(buildUpdate)
+
+      status(buildUpdateResult) shouldBe Status.OK
+      contentAsJson(buildUpdateResult).as[DataModel] shouldBe DataModel("abcd", "test name", "test description", 200) //this will not work as we are not returning the updates result in the body of accepted action
+      afterEach()
+    }
+
+    "not update"
   }
 
 

@@ -1,6 +1,6 @@
 // @GENERATOR:play-routes-compiler
 // @SOURCE:/Users/sarina.salamon/Documents/play-template/conf/routes
-// @DATE:Fri Jun 24 15:06:46 BST 2022
+// @DATE:Mon Jun 27 15:01:28 BST 2022
 
 package router
 
@@ -52,7 +52,7 @@ class Routes(
     ("""DELETE""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """delete/""" + "$" + """id<[^/]+>""", """controllers.ApplicationController.delete(id:String)"""),
     ("""GET""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """library/google/""" + "$" + """search<[^/]+>/""" + "$" + """term<[^/]+>""", """controllers.ApplicationController.getGoogleBook(search:String, term:String)"""),
     ("""GET""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """read/""" + "$" + """name<[^/]+>""", """controllers.ApplicationController.getBookByName(name:String)"""),
-    ("""PUT""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """updateOne/""" + "$" + """id<[^/]+>""", """controllers.ApplicationController.updateName(id:String)"""),
+    ("""PUT""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """updateOneElement/""" + "$" + """id<[^/]+>""", """controllers.ApplicationController.updateOneElement(id:String)"""),
     Nil
   ).foldLeft(List.empty[(String,String,String)]) { (s,e) => e.asInstanceOf[Any] match {
     case r @ (_,_,_) => s :+ r.asInstanceOf[(String,String,String)]
@@ -222,19 +222,19 @@ class Routes(
     )
   )
 
-  // @LINE:21
-  private[this] lazy val controllers_ApplicationController_updateName9_route = Route("PUT",
-    PathPattern(List(StaticPart(this.prefix), StaticPart(this.defaultPrefix), StaticPart("updateOne/"), DynamicPart("id", """[^/]+""",true)))
+  // @LINE:23
+  private[this] lazy val controllers_ApplicationController_updateOneElement9_route = Route("PUT",
+    PathPattern(List(StaticPart(this.prefix), StaticPart(this.defaultPrefix), StaticPart("updateOneElement/"), DynamicPart("id", """[^/]+""",true)))
   )
-  private[this] lazy val controllers_ApplicationController_updateName9_invoker = createInvoker(
-    ApplicationController_0.updateName(fakeValue[String]),
+  private[this] lazy val controllers_ApplicationController_updateOneElement9_invoker = createInvoker(
+    ApplicationController_0.updateOneElement(fakeValue[String]),
     play.api.routing.HandlerDef(this.getClass.getClassLoader,
       "router",
       "controllers.ApplicationController",
-      "updateName",
+      "updateOneElement",
       Seq(classOf[String]),
       "PUT",
-      this.prefix + """updateOne/""" + "$" + """id<[^/]+>""",
+      this.prefix + """updateOneElement/""" + "$" + """id<[^/]+>""",
       """""",
       Seq()
     )
@@ -297,10 +297,10 @@ class Routes(
         controllers_ApplicationController_getBookByName8_invoker.call(ApplicationController_0.getBookByName(name))
       }
   
-    // @LINE:21
-    case controllers_ApplicationController_updateName9_route(params@_) =>
+    // @LINE:23
+    case controllers_ApplicationController_updateOneElement9_route(params@_) =>
       call(params.fromPath[String]("id", None)) { (id) =>
-        controllers_ApplicationController_updateName9_invoker.call(ApplicationController_0.updateName(id))
+        controllers_ApplicationController_updateOneElement9_invoker.call(ApplicationController_0.updateOneElement(id))
       }
   }
 }

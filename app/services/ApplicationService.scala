@@ -1,7 +1,7 @@
 package services
 
 import controllers.ApplicationController
-import models.{APIError, DataModel, UpdateOneName}
+import models.{APIError, DataModel, UpdateOneThing}
 import play.api.libs.json.{JsBoolean, JsError, JsSuccess, JsValue}
 import play.api.mvc.{Action, AnyContent, BaseController, ControllerComponents, Request, Results}
 import play.api.mvc.Results.{BadRequest, Created}
@@ -64,10 +64,10 @@ class ApplicationService @Inject()( val dataRepository: DataRepository)(implicit
   }
 
 
-  def updateOneName(inputRequest: Request[JsValue], id: String): Future[Either[APIError, DataModel]] = {
-    inputRequest.body.validate[UpdateOneName] match{
-      case JsSuccess(updateOneName, _) =>
-        dataRepository.updateName(id, updateOneName)
+  def updateOneElement(inputRequest: Request[JsValue], id: String): Future[Either[APIError, DataModel]] = {
+    inputRequest.body.validate[UpdateOneThing] match{
+      case JsSuccess(updateOneThing, _) =>
+        dataRepository.updateOneElement(id, updateOneThing)
       case JsError(_) => Future(Left(APIError.BadAPIResponse(404, "")))
     }
   }
