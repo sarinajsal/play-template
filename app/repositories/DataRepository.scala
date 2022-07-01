@@ -1,5 +1,6 @@
 package repositories
 
+  import com.google.inject.ImplementedBy
   import com.mongodb.client.result.DeleteResult
   import com.mongodb.session.ClientSession
   import models.{APIError, DataModel, UpdateOneThing}
@@ -20,7 +21,17 @@ package repositories
   import org.mongodb.scala.model.UpdateOptions
   import org.mongodb.scala.bson.BsonObjectId
 
+@ImplementedBy(classOf[DataRepository]) //says this trait is a type of dataRepository
+trait MockRepository{
 
+  def index(): Future[Either[APIError, Seq[DataModel]]]
+  def read(id: String): Future[Either[APIError, DataModel]]
+  def create(book: DataModel): Future[Either[APIError, Unit]]
+  def update(id: String, book: DataModel): Future[Either[APIError, Unit]]
+  def getBookByName(name: String): Future[Either[APIError, DataModel]]
+  def delete(id: String): Future[Either[APIError, Boolean]]
+  def updateOneElement(id: String, updateOne: UpdateOneThing): Future[Either[APIError, DataModel]]
+}
 
   @Singleton
   class DataRepository @Inject()(
@@ -33,13 +44,20 @@ package repositories
       Indexes.ascending("_id")
     )),
     replaceIndexes = false
-  ) {
+  ) with MockRepository{ //class is extending the trait, every method in mock rep has to be inside class datarep w a body
 
     //    def create(book: DataModel): Future[DataModel] =
     //      collection //a lazy val in PlayMongoRep
     //        .insertOne(book)
     //        .toFuture()
     //        .map(_ => book)
+
+    def index(): Future[Either[APIError, Seq[DataModel]]] = {
+      collection.find().toFuture().flatMap{
+        case books:Seq[DataModel] => Future(Right(books))
+        case _ => Future(Left(APIError.BadAPIResponse(404, "NO BOOKS")))
+      }
+    }
 
     def create(book: DataModel): Future[Either[APIError, Unit]] = {
       collection.insertOne(book).toFuture()
@@ -164,7 +182,6 @@ package repositories
     def deleteAll(): Future[Unit] = collection.deleteMany(empty()).toFuture().map(_ => ())//Hint: needed for tests
 
   }
-
 
 
 

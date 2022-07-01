@@ -3,16 +3,20 @@ package controllers
 import akka.http.scaladsl.model.HttpHeader.ParsingResult.Ok
 import baseSpec.BaseSpecWithApplication
 import models.{DataModel, UpdateOneThing}
+import org.scalamock.scalatest.MockFactory
+import org.scalatest.concurrent.ScalaFutures
+import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.test.FakeRequest
 import play.api.http.{Status, dateFormat}
 import play.api.libs.json.{JsNull, JsValue, Json}
 import play.api.test.Helpers.{contentAsJson, defaultAwaitTimeout, status}
 import play.api.mvc.{AnyContentAsEmpty, Result, Results}
+import repositories.DataRepository
 
 import scala.concurrent.Future
 import scala.tools.nsc.interpreter.Naming.sessionNames.result
 
-class ApplicationControllerSpec extends BaseSpecWithApplication{
+ class ApplicationControllerSpec extends BaseSpecWithApplication with MockFactory with ScalaFutures {
 
   val TestApplicationController = new ApplicationController( //creating an instance of the controller
     component,
@@ -20,6 +24,7 @@ class ApplicationControllerSpec extends BaseSpecWithApplication{
     service,
     appservice
   )
+
 
   private val dataModel: DataModel = DataModel( //a test data model
     "abcd",
@@ -265,7 +270,6 @@ class ApplicationControllerSpec extends BaseSpecWithApplication{
       afterEach()
     }
 
-    "not update"
   }
 
 
@@ -282,9 +286,7 @@ class ApplicationControllerSpec extends BaseSpecWithApplication{
     }
   }
 
-  "ApplicationController .create()" should {
 
-  }
 
   "ApplicationController .read(id:String)" should {
 
@@ -296,13 +298,7 @@ class ApplicationControllerSpec extends BaseSpecWithApplication{
 
   }
 
-  "ApplicationController .update(id:String)" should {
 
-  }
-
-  "ApplicationController .delete(id:String)" should {
-
-  }
 
   override def beforeEach(): Unit = repository.deleteAll()
   override def afterEach(): Unit = repository.deleteAll()

@@ -5,8 +5,7 @@ import models.{APIError, DataModel, UpdateOneThing}
 import play.api.libs.json.{JsBoolean, JsError, JsSuccess, JsValue}
 import play.api.mvc.{Action, AnyContent, BaseController, ControllerComponents, Request, Results}
 import play.api.mvc.Results.{BadRequest, Created}
-import repositories.DataRepository
-import views.html.helper.input
+import repositories.{DataRepository, MockRepository}
 
 import java.awt.Desktop.Action
 import javax.inject.{Inject, Singleton}
@@ -22,8 +21,14 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class ApplicationService @Inject()( val dataRepository: DataRepository)(implicit val executionContext: ExecutionContext){
+class ApplicationService @Inject()(val dataRepository: MockRepository)(implicit val executionContext: ExecutionContext){
 
+  def index: Future[Either[APIError, Seq[DataModel]]] = {
+    dataRepository.index.map {
+      case Right(books: Seq[DataModel]) => Right(books)
+      case Left (error) => Left(APIError.BadAPIResponse(404, "cannot find books"))
+    }
+  }
 
   def read(id: String): Future[Either[APIError, DataModel]] = {
     dataRepository.read(id).map {

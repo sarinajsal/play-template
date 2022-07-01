@@ -1,7 +1,7 @@
-[0m[[0m[31merror[0m] [0m[0m/Users/sarina.salamon/Documents/play-template/test/controllers/ApplicationControllerSpec.scala:265:48: value deleteAll is not a member of repositories.DataRepository[0m
-[0m[[0m[31merror[0m] [0m[0m  override def beforeEach(): Unit = repository.deleteAll()[0m
-[0m[[0m[31merror[0m] [0m[0m                                               ^[0m
-[0m[[0m[31merror[0m] [0m[0m/Users/sarina.salamon/Documents/play-template/test/controllers/ApplicationControllerSpec.scala:266:47: value deleteAll is not a member of repositories.DataRepository[0m
-[0m[[0m[31merror[0m] [0m[0m  override def afterEach(): Unit = repository.deleteAll()[0m
-[0m[[0m[31merror[0m] [0m[0m                                              ^[0m
-[0m[[0m[31merror[0m] [0m[0mtwo errors found[0m
+[0m[[0m[31merror[0m] [0m[0m/Users/sarina.salamon/Documents/play-template/test/controllers/ApplicationControllerSpec.scala:19:8: class ApplicationControllerSpec inherits conflicting members:[0m
+[0m[[0m[31merror[0m] [0m[0m  implicit lazy val app: play.api.Application (defined in trait BaseOneServerPerSuite) and[0m
+[0m[[0m[31merror[0m] [0m[0m  implicit lazy val app: play.api.Application (defined in trait BaseOneAppPerSuite)[0m
+[0m[[0m[31merror[0m] [0m[0m  (note: this can be resolved by declaring an `override` in class ApplicationControllerSpec.)[0m
+[0m[[0m[31merror[0m] [0m[0m class ApplicationControllerSpec extends BaseSpecWithApplication with MockFactory with ScalaFutures with GuiceOneAppPerSuite{[0m
+[0m[[0m[31merror[0m] [0m[0m       ^[0m
+[0m[[0m[31merror[0m] [0m[0mone error found[0m

@@ -15,7 +15,7 @@ import play.api.mvc.{AnyContentAsEmpty, MessagesControllerComponents}
 import play.api.test.CSRFTokenHelper.CSRFFRequestHeader
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{DELETE, GET, POST, PUT}
-import repositories.DataRepository
+import repositories.{DataRepository, MockRepository}
 import services.{ApplicationService, LibraryService}
 
 import scala.concurrent.ExecutionContext
@@ -32,6 +32,7 @@ trait BaseSpecWithApplication extends BaseSpec with GuiceOneServerPerSuite with 
   lazy val service: LibraryService = injector.instanceOf[LibraryService]
   lazy val connector: LibraryConnector = injector.instanceOf[LibraryConnector]
   lazy val appservice: ApplicationService = injector.instanceOf[ApplicationService]
+  lazy val mockRepository: MockRepository = injector.instanceOf[MockRepository]
 
   implicit val messagesApi = app.injector.instanceOf[MessagesApi]
   lazy val injector: Injector = app.injector

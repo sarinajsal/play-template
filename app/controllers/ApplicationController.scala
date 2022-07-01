@@ -4,7 +4,7 @@ import models.{APIError, DataModel, UpdateOneThing}
 import play.api.libs.json.Format.GenericFormat
 import play.api.libs.json.{JsBoolean, JsError, JsSuccess, JsValue, Json}
 import play.api.mvc.{Action, AnyContent, BaseController, ControllerComponents, Results}
-import repositories.DataRepository
+import repositories.{DataRepository, MockRepository}
 import services.{ApplicationService, LibraryService}
 
 import javax.inject.{Inject, Singleton}
@@ -12,12 +12,18 @@ import scala.concurrent.{ExecutionContext, Future}
 
 
 @Singleton
-class ApplicationController @Inject()(val controllerComponents: ControllerComponents, val dataRepository: DataRepository, val services: LibraryService, val applicationService: ApplicationService)(implicit val executionContext: ExecutionContext) extends BaseController{
+class ApplicationController @Inject()(val controllerComponents: ControllerComponents,
+                                      val dataRepository: DataRepository,
+                                      val services: LibraryService,
+                                      val applicationService: ApplicationService)(implicit val executionContext: ExecutionContext) extends BaseController{
 
   def index(): Action[AnyContent] = Action.async { implicit request =>
-    val books: Future[Seq[DataModel]] = dataRepository.collection.find().toFuture()
-    books.map(items => Json.toJson(items)).map(result => Ok(result)) //why cant i wrap the whole thing in an Ok?
-
+//    val books: Future[Seq[DataModel]] = dataRepository.collection.find().toFuture()
+//    books.map(items => Json.toJson(items)).map(result => Ok(result)) //why cant i wrap the whole thing in an Ok?
+    applicationService.index.map{
+      case Right(books: Seq[DataModel]) => Ok(Json.toJson(books))
+      case Left(error) => Status(error.httpResponseStatus)(error.reason)
+    }
   }
 
 //  def index2(): Action[AnyContent] = Action.async { implicit request =>

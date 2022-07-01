@@ -16,7 +16,7 @@ class LibraryConnector @Inject()(ws: WSClient) {
       response
         .map {
           result =>
-            Right(result.json.as[Response])
+            Right(result.json.as[Response]) //change to a new google api datamodel
         }
         .recover { case _: WSResponse =>
           Left(APIError.BadAPIResponse(500, "Could not connect"))

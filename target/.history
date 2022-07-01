@@ -93,3 +93,5 @@ run
 run 9111
 testOnly *ApplicationControllerSpec* -- -z "ss"
 testOnly *ApplicationControllerSpec* -- -z "sjs"
+testOnly *ApplicationServiceSpec* -- -z "ss"
+testOnly *ApplicationServiceSpec* -- -z "sjs"
