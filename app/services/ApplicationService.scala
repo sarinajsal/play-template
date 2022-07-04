@@ -57,7 +57,7 @@ class ApplicationService @Inject()(val dataRepository: MockRepository)(implicit 
     inputRequest.body.validate[DataModel] match {
       case JsSuccess(dataModel, _) =>
         dataRepository.update(id, dataModel)
-      case JsError(_) => Future(Left(APIError.BadAPIResponse(404, "could not update")))
+      case JsError(_) => Future(Left(APIError.BadAPIResponse(404, "could not update service")))
     }
   }
 

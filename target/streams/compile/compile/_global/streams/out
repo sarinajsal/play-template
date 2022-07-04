@@ -1,15 +1,15 @@
-[0m[[0m[33mwarn[0m] [0m[0m/Users/sarina.salamon/Documents/play-template/app/repositories/DataRepository.scala:65:69: adaptation of an empty argument list by inserting () is deprecated: this is unlikely to be what you want[0m
+[0m[[0m[33mwarn[0m] [0m[0m/Users/sarina.salamon/Documents/play-template/app/repositories/DataRepository.scala:63:69: adaptation of an empty argument list by inserting () is deprecated: this is unlikely to be what you want[0m
 [0m[[0m[33mwarn[0m] [0m[0m        signature: Right.apply[A, B](value: B): scala.util.Right[A,B][0m
 [0m[[0m[33mwarn[0m] [0m[0m  given arguments: <none>[0m
 [0m[[0m[33mwarn[0m] [0m[0m after adaptation: Right((): Unit)[0m
 [0m[[0m[33mwarn[0m] [0m[0m          case x if x.wasAcknowledged().equals(true) => Future(Right())[0m
 [0m[[0m[33mwarn[0m] [0m[0m                                                                    ^[0m
-[0m[[0m[33mwarn[0m] [0m[0m/Users/sarina.salamon/Documents/play-template/app/repositories/DataRepository.scala:81:33: Auto-application to `()` is deprecated. Supply the empty argument list `()` explicitly to invoke method headOption,[0m
+[0m[[0m[33mwarn[0m] [0m[0m/Users/sarina.salamon/Documents/play-template/app/repositories/DataRepository.scala:79:33: Auto-application to `()` is deprecated. Supply the empty argument list `()` explicitly to invoke method headOption,[0m
 [0m[[0m[33mwarn[0m] [0m[0mor remove the empty argument list from its definition (Java-defined methods are exempt).[0m
 [0m[[0m[33mwarn[0m] [0m[0mIn Scala 3, an unapplied method like this will be eta-expanded into a function.[0m
 [0m[[0m[33mwarn[0m] [0m[0m      collection.find(byID(id)).headOption flatMap {[0m
 [0m[[0m[33mwarn[0m] [0m[0m                                ^[0m
-[0m[[0m[33mwarn[0m] [0m[0m/Users/sarina.salamon/Documents/play-template/app/repositories/DataRepository.scala:89:37: Auto-application to `()` is deprecated. Supply the empty argument list `()` explicitly to invoke method headOption,[0m
+[0m[[0m[33mwarn[0m] [0m[0m/Users/sarina.salamon/Documents/play-template/app/repositories/DataRepository.scala:87:37: Auto-application to `()` is deprecated. Supply the empty argument list `()` explicitly to invoke method headOption,[0m
 [0m[[0m[33mwarn[0m] [0m[0mor remove the empty argument list from its definition (Java-defined methods are exempt).[0m
 [0m[[0m[33mwarn[0m] [0m[0mIn Scala 3, an unapplied method like this will be eta-expanded into a function.[0m
 [0m[[0m[33mwarn[0m] [0m[0m      collection.find(byName(name)).headOption.flatMap {[0m
@@ -22,26 +22,10 @@
 [0m[[0m[33mwarn[0m] [0m[0mIn Scala 3, an unapplied method like this will be eta-expanded into a function.[0m
 [0m[[0m[33mwarn[0m] [0m[0m    dataRepository.index.map {[0m
 [0m[[0m[33mwarn[0m] [0m[0m                   ^[0m
-[0m[[0m[33mwarn[0m] [0m[0m/Users/sarina.salamon/Documents/play-template/conf/routes:7:1: Auto-application to `()` is deprecated. Supply the empty argument list `()` explicitly to invoke method index,[0m
-[0m[[0m[33mwarn[0m] [0m[0mor remove the empty argument list from its definition (Java-defined methods are exempt).[0m
-[0m[[0m[33mwarn[0m] [0m[0mIn Scala 3, an unapplied method like this will be eta-expanded into a function.[0m
-[0m[[0m[33mwarn[0m] [0m[0mGET     /api     controllers.ApplicationController.index[0m
-[0m[[0m[33mwarn[0m] [0m[0m/Users/sarina.salamon/Documents/play-template/conf/routes:9:1: Auto-application to `()` is deprecated. Supply the empty argument list `()` explicitly to invoke method create,[0m
-[0m[[0m[33mwarn[0m] [0m[0mor remove the empty argument list from its definition (Java-defined methods are exempt).[0m
-[0m[[0m[33mwarn[0m] [0m[0mIn Scala 3, an unapplied method like this will be eta-expanded into a function.[0m
-[0m[[0m[33mwarn[0m] [0m[0mPOST    /create   controllers.ApplicationController.create[0m
-[0m[[0m[33mwarn[0m] [0m[0m/Users/sarina.salamon/Documents/play-template/conf/routes:7:1: Auto-application to `()` is deprecated. Supply the empty argument list `()` explicitly to invoke method index,[0m
-[0m[[0m[33mwarn[0m] [0m[0mor remove the empty argument list from its definition (Java-defined methods are exempt).[0m
-[0m[[0m[33mwarn[0m] [0m[0mIn Scala 3, an unapplied method like this will be eta-expanded into a function.[0m
-[0m[[0m[33mwarn[0m] [0m[0mGET     /api     controllers.ApplicationController.index[0m
-[0m[[0m[33mwarn[0m] [0m[0m/Users/sarina.salamon/Documents/play-template/conf/routes:9:1: Auto-application to `()` is deprecated. Supply the empty argument list `()` explicitly to invoke method create,[0m
-[0m[[0m[33mwarn[0m] [0m[0mor remove the empty argument list from its definition (Java-defined methods are exempt).[0m
-[0m[[0m[33mwarn[0m] [0m[0mIn Scala 3, an unapplied method like this will be eta-expanded into a function.[0m
-[0m[[0m[33mwarn[0m] [0m[0mPOST    /create   controllers.ApplicationController.create[0m
-[0m[[0m[33mwarn[0m] [0m[0m/Users/sarina.salamon/Documents/play-template/app/repositories/DataRepository.scala:65:47: comparing values of types Boolean and Boolean using `equals` unsafely bypasses cooperative equality; use `==` instead[0m
+[0m[[0m[33mwarn[0m] [0m[0m/Users/sarina.salamon/Documents/play-template/app/repositories/DataRepository.scala:63:47: comparing values of types Boolean and Boolean using `equals` unsafely bypasses cooperative equality; use `==` instead[0m
 [0m[[0m[33mwarn[0m] [0m[0m          case x if x.wasAcknowledged().equals(true) => Future(Right())[0m
 [0m[[0m[33mwarn[0m] [0m[0m                                              ^[0m
-[0m[[0m[33mwarn[0m] [0m[0m/Users/sarina.salamon/Documents/play-template/app/repositories/DataRepository.scala:101:45: comparing values of types Boolean and Boolean using `equals` unsafely bypasses cooperative equality; use `==` instead[0m
+[0m[[0m[33mwarn[0m] [0m[0m/Users/sarina.salamon/Documents/play-template/app/repositories/DataRepository.scala:99:45: comparing values of types Boolean and Boolean using `equals` unsafely bypasses cooperative equality; use `==` instead[0m
 [0m[[0m[33mwarn[0m] [0m[0m        case x if x.wasAcknowledged().equals(true) => Future(Right(()))[0m
 [0m[[0m[33mwarn[0m] [0m[0m                                            ^[0m
-[0m[[0m[33mwarn[0m] [0m[0m11 warnings found[0m
+[0m[[0m[33mwarn[0m] [0m[0m7 warnings found[0m

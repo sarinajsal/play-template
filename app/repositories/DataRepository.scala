@@ -34,9 +34,7 @@ trait MockRepository{
 }
 
   @Singleton
-  class DataRepository @Inject()(
-                                  mongoComponent: MongoComponent
-                                )(implicit ec: ExecutionContext) extends PlayMongoRepository[DataModel](
+  class DataRepository @Inject()(mongoComponent: MongoComponent)(implicit ec: ExecutionContext) extends PlayMongoRepository[DataModel](
     collectionName = "dataModels",
     mongoComponent = mongoComponent,
     domainFormat = DataModel.formats,
@@ -99,7 +97,7 @@ trait MockRepository{
         options = new ReplaceOptions().upsert(true) //What happens when we set this to false?
       ).toFuture().flatMap {
         case x if x.wasAcknowledged().equals(true) => Future(Right(()))
-        case _ => Future(Left(APIError.BadAPIResponse(404, "COULD NOT UPDATE")))
+        case _ => Future(Left(APIError.BadAPIResponse(404, "COULD NOT UPDATE DR")))
       }
 
 
